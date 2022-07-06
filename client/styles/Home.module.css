@@ -20,3 +20,11 @@
 .form > input {
   margin-bottom: 1rem;;
 }
+
+.form > label {
+  margin-bottom: .2rem;
+}
+
+.form > button {
+  padding: .4rem;
+}

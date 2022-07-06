@@ -13,6 +13,7 @@ const Home: NextPage = () => {
 			</Head>
 
 			<main className={styles.main}>
+				<h1 className="header">Log In</h1>
 				<div className={styles.formContainer}>
 					<form className={styles.form}>
 						<label htmlFor="username">Username</label>
