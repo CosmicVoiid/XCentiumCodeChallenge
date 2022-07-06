@@ -47,7 +47,7 @@ const Home: NextPage = () => {
 			</Head>
 
 			<main className={styles.main}>
-				<h1 className="header">Log In</h1>
+				<h1 className={styles.header}>Log In</h1>
 				<div className={styles.formContainer}>
 					<form className={styles.form} onSubmit={formik.handleSubmit}>
 						<label htmlFor="username">Username</label>
@@ -60,7 +60,9 @@ const Home: NextPage = () => {
 							value={formik.values.username}
 						/>
 						{formik.touched.username && formik.errors.username ? (
-							<div>{formik.errors.username}</div>
+							<div className={styles.errorMessage}>
+								{formik.errors.username}
+							</div>
 						) : null}
 
 						<label htmlFor="password">Password</label>
@@ -73,10 +75,22 @@ const Home: NextPage = () => {
 							value={formik.values.password}
 						/>
 						{formik.touched.password && formik.errors.password ? (
-							<div>{formik.errors.password}</div>
+							<div className={styles.errorMessage}>
+								{formik.errors.password}
+							</div>
 						) : null}
 
-						<button type="submit">Log In</button>
+						<button
+							type="submit"
+							disabled={
+								formik.errors.username !== undefined ||
+								formik.errors.password !== undefined ||
+								!formik.touched.username ||
+								!formik.touched.password
+							}
+						>
+							Log In
+						</button>
 					</form>
 				</div>
 			</main>
