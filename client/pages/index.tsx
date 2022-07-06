@@ -4,12 +4,35 @@ import Image from "next/image";
 import styles from "../styles/Home.module.css";
 import { useFormik } from "formik";
 
+type Values = {
+	username: string;
+	password: string;
+};
+
+type Errors = {
+	username?: string;
+	password?: string;
+};
+
+const validate = (values: Values) => {
+	const errors: Errors = {};
+	if (!values.username) {
+		errors.username = "Username Required";
+	}
+	if (!values.password) {
+		errors.password = "Password Required";
+	}
+
+	return errors;
+};
+
 const Home: NextPage = () => {
 	const formik = useFormik({
 		initialValues: {
 			username: "",
 			password: "",
 		},
+		validate,
 		onSubmit: (values) => {
 			alert(JSON.stringify(values, null, 2));
 		},
@@ -33,16 +56,26 @@ const Home: NextPage = () => {
 							id="username"
 							name="username"
 							onChange={formik.handleChange}
+							onBlur={formik.handleBlur}
 							value={formik.values.username}
 						/>
+						{formik.touched.username && formik.errors.username ? (
+							<div>{formik.errors.username}</div>
+						) : null}
+
 						<label htmlFor="password">Password</label>
 						<input
 							type="password"
 							id="password"
 							name="password"
 							onChange={formik.handleChange}
+							onBlur={formik.handleBlur}
 							value={formik.values.password}
 						/>
+						{formik.touched.password && formik.errors.password ? (
+							<div>{formik.errors.password}</div>
+						) : null}
+
 						<button type="submit">Log In</button>
 					</form>
 				</div>
