@@ -18,7 +18,8 @@
 }
 
 .form > input {
-  margin-bottom: 1rem;;
+  margin-bottom: 1rem;
+  padding: .3rem;
 }
 
 .form > label {
