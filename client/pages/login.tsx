@@ -3,7 +3,7 @@ import Router from "next/router";
 import { useState } from "react";
 import Head from "next/head";
 import Image from "next/image";
-import styles from "../styles/Home.module.css";
+import styles from "../styles/Login.module.css";
 import { useFormik } from "formik";
 
 type Values = {
@@ -28,7 +28,7 @@ const validate = (values: Values) => {
 	return errors;
 };
 
-const Home: NextPage = () => {
+const Login: NextPage = () => {
 	const [errorMessage, setErrorMessage] = useState<string>("");
 
 	const formik = useFormik({
@@ -135,4 +135,4 @@ const Home: NextPage = () => {
 	);
 };
 
-export default Home;
+export default Login;

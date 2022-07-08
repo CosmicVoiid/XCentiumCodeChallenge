@@ -1,0 +1,44 @@
+.container {
+    padding: 0 2rem;
+  }
+  
+  .main {
+    min-height: 100vh;
+    padding: 4rem 0;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .header {
+    font-size: 2.5rem; 
+  }
+  
+  .form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .form > input {
+    margin-bottom: 1rem;
+    padding: .3rem;
+    font-size: 1.2rem;
+  }
+  
+  .form > label {
+    margin-bottom: .2rem;
+    font-size: 1.2rem;
+  }
+  
+  .form > button {
+    padding: .4rem;
+  }
+  
+  .errorMessage {
+    position: relative;
+    color: rgb(255, 57, 57);
+    margin-bottom: 1rem;
+    bottom: .7rem;
+  }
