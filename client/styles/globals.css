@@ -14,3 +14,10 @@ a {
 * {
   box-sizing: border-box;
 }
+
+:root {
+  --bg-color: #f0f4f7;
+  --font-color: #93959c;
+  --brand-color: #379fb1;
+  --border-radius: 15px;
+} 

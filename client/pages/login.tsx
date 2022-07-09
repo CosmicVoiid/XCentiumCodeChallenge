@@ -1,10 +1,34 @@
-import type { NextPage } from "next";
+import type { NextPage, GetServerSideProps } from "next";
 import Router from "next/router";
 import { useState } from "react";
+import axios from "axios";
 import Head from "next/head";
 import Image from "next/image";
 import styles from "../styles/Login.module.css";
 import { useFormik } from "formik";
+
+export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
+	try {
+		await axios.get(process.env.NEXT_PUBLIC_SERVER_URL! + "/account/user", {
+			withCredentials: true,
+			headers: {
+				"Content-Type": "application/json",
+				Cookie: `${req.headers.cookie}`,
+			},
+		});
+
+		return {
+			redirect: {
+				permanent: false,
+				destination: "/",
+			},
+		};
+	} catch {
+		return {
+			props: {},
+		};
+	}
+};
 
 type Values = {
 	username: string;
@@ -80,53 +104,68 @@ const Login: NextPage = () => {
 			</Head>
 
 			<main className={styles.main}>
-				<h1 className={styles.header}>Log In</h1>
-				<div className={styles.formContainer}>
-					<form className={styles.form} onSubmit={formik.handleSubmit}>
-						<label htmlFor="username">Username</label>
-						<input
-							type="text"
-							id="username"
-							name="username"
-							onChange={formik.handleChange}
-							onBlur={formik.handleBlur}
-							value={formik.values.username}
-						/>
-						{formik.touched.username && formik.errors.username ? (
-							<div className={styles.errorMessage}>
-								{formik.errors.username}
-							</div>
-						) : null}
+				<Image
+					src="/logo.svg"
+					alt="XCentium Logo"
+					width={200}
+					height={100}
+				></Image>
+				<div className={styles.mainContainer}>
+					<h1 className={styles.header}>Log In</h1>
+					<div className={styles.formContainer}>
+						<form className={styles.form} onSubmit={formik.handleSubmit}>
+							<label className={styles.label} htmlFor="username">
+								Username
+							</label>
+							<input
+								className={styles.textInput}
+								type="text"
+								id="username"
+								name="username"
+								onChange={formik.handleChange}
+								onBlur={formik.handleBlur}
+								value={formik.values.username}
+							/>
+							{formik.touched.username && formik.errors.username ? (
+								<div className={styles.errorMessage}>
+									{formik.errors.username}
+								</div>
+							) : null}
 
-						<label htmlFor="password">Password</label>
-						<input
-							type="password"
-							id="password"
-							name="password"
-							onChange={formik.handleChange}
-							onBlur={formik.handleBlur}
-							value={formik.values.password}
-						/>
-						{formik.touched.password && formik.errors.password ? (
-							<div className={styles.errorMessage}>
-								{formik.errors.password}
-							</div>
-						) : null}
+							<label className={styles.label} htmlFor="password">
+								Password
+							</label>
+							<input
+								className={styles.textInput}
+								type="password"
+								id="password"
+								name="password"
+								onChange={formik.handleChange}
+								onBlur={formik.handleBlur}
+								value={formik.values.password}
+							/>
+							{formik.touched.password && formik.errors.password ? (
+								<div className={styles.errorMessage}>
+									{formik.errors.password}
+								</div>
+							) : null}
 
-						{errorMessage.length !== 0 && (
-							<div className={styles.errorMessage}>{errorMessage}</div>
-						)}
+							{errorMessage.length !== 0 && (
+								<div className={styles.errorMessage}>{errorMessage}</div>
+							)}
 
-						<button
-							type="submit"
-							disabled={
-								formik.values.username.length === 0 ||
-								formik.values.password.length === 0
-							}
-						>
-							Log In
-						</button>
-					</form>
+							<button
+								className={styles.btn}
+								type="submit"
+								disabled={
+									formik.values.username.length === 0 ||
+									formik.values.password.length === 0
+								}
+							>
+								Log In
+							</button>
+						</form>
+					</div>
 				</div>
 			</main>
 		</div>
@@ -134,3 +173,5 @@ const Login: NextPage = () => {
 };
 
 export default Login;
+
+//https://www.xcentium.com/-/media/images/logo/xcentium-logo-dark.svg?h=111&iar=0&w=717&rev=c5fcdf17621c46499831bebd24654b21&hash=2986364333BC09037F34217B55C16539

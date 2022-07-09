@@ -1,6 +1,5 @@
 import type { NextPage, GetServerSideProps } from "next";
 import Router from "next/router";
-import { useEffect } from "react";
 import axios from "axios";
 import Head from "next/head";
 import Image from "next/image";
@@ -19,12 +18,9 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
 			}
 		);
 
-		console.log(response.status);
-		const fullName = response.data;
-
 		return {
 			props: {
-				fullName: fullName,
+				fullName: response.data.user,
 			},
 		};
 	} catch {
@@ -37,31 +33,27 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
 	}
 };
 
-const Home: NextPage = () => {
-	// useEffect(() => {
-	// 	//Fetch user from api
-	// 	const fetchUser = async () => {
-	// 		const response = await fetch(
-	// 			process.env.NEXT_PUBLIC_SERVER_URL! + "/account/user",
-	// 			{
-	// 				method: "GET",
-	// 				mode: "cors",
-	// 				credentials: "include",
-	// 				headers: {
-	// 					"Content-Type": "application/json",
-	// 				},
-	// 			}
-	// 		);
-	// 		console.log(response.status);
-	// 		if (response.status !== 200) {
-	// 			return Router.push("/login");
-	// 		}
+type Props = {
+	fullName: string;
+};
 
-	// 		const fullName = await response.json();
-	// 	};
+const Home: NextPage<Props> = (props: Props) => {
+	const handleLogout = async () => {
+		const response = await fetch(
+			process.env.NEXT_PUBLIC_SERVER_URL! + "/account/logout",
+			{
+				method: "GET",
+				credentials: "include",
+				headers: {
+					"Content-Type": "application/json",
+				},
+			}
+		);
 
-	// 	fetchUser();
-	// });
+		if (response.status === 200) {
+			Router.push("/login");
+		}
+	};
 
 	return (
 		<div className={styles.container}>
@@ -71,7 +63,15 @@ const Home: NextPage = () => {
 				<link rel="icon" href="/favicon.ico" />
 			</Head>
 			<main className={styles.main}>
-				<h1>Welcome {}</h1>
+				<div className={styles.mainContainer}>
+					<div className={styles.btnContainer}>
+						<button className={styles.btn} onClick={handleLogout}>
+							Log Out
+						</button>
+					</div>
+					<h1>Welcome {props.fullName}!</h1>
+					<Image src="/dog.jpg" width={350} height={450} alt="party dog" />{" "}
+				</div>
 			</main>
 		</div>
 	);
