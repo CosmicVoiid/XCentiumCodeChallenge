@@ -63,6 +63,12 @@ const Home: NextPage<Props> = (props: Props) => {
 				<link rel="icon" href="/favicon.ico" />
 			</Head>
 			<main className={styles.main}>
+				<Image
+					src="/logo.svg"
+					alt="XCentium Logo"
+					width={200}
+					height={100}
+				></Image>
 				<div className={styles.mainContainer}>
 					<div className={styles.btnContainer}>
 						<button className={styles.btn} onClick={handleLogout}>
