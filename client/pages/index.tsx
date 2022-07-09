@@ -1,135 +1,77 @@
-import type { NextPage } from "next";
+import type { NextPage, GetServerSideProps } from "next";
 import Router from "next/router";
-import { useState } from "react";
+import { useEffect } from "react";
+import axios from "axios";
 import Head from "next/head";
 import Image from "next/image";
 import styles from "../styles/Home.module.css";
-import { useFormik } from "formik";
 
-type Values = {
-	username: string;
-	password: string;
-};
+export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
+	try {
+		const response = await axios.get(
+			process.env.NEXT_PUBLIC_SERVER_URL! + "/account/user",
+			{
+				withCredentials: true,
+				headers: {
+					"Content-Type": "application/json",
+					Cookie: `${req.headers.cookie}`,
+				},
+			}
+		);
 
-type Errors = {
-	username?: string;
-	password?: string;
-};
+		console.log(response.status);
+		const fullName = response.data;
 
-const validate = (values: Values) => {
-	const errors: Errors = {};
-	if (!values.username) {
-		errors.username = "Username Required";
+		return {
+			props: {
+				fullName: fullName,
+			},
+		};
+	} catch {
+		return {
+			redirect: {
+				permanent: false,
+				destination: "/login",
+			},
+		};
 	}
-	if (!values.password) {
-		errors.password = "Password Required";
-	}
-
-	return errors;
 };
 
 const Home: NextPage = () => {
-	const [errorMessage, setErrorMessage] = useState<string>("");
+	// useEffect(() => {
+	// 	//Fetch user from api
+	// 	const fetchUser = async () => {
+	// 		const response = await fetch(
+	// 			process.env.NEXT_PUBLIC_SERVER_URL! + "/account/user",
+	// 			{
+	// 				method: "GET",
+	// 				mode: "cors",
+	// 				credentials: "include",
+	// 				headers: {
+	// 					"Content-Type": "application/json",
+	// 				},
+	// 			}
+	// 		);
+	// 		console.log(response.status);
+	// 		if (response.status !== 200) {
+	// 			return Router.push("/login");
+	// 		}
 
-	const formik = useFormik({
-		initialValues: {
-			username: "",
-			password: "",
-		},
-		validate,
-		onSubmit: () => {
-			handleSubmit();
-		},
-	});
+	// 		const fullName = await response.json();
+	// 	};
 
-	const handleSubmit = async () => {
-		try {
-			const response = await fetch(
-				process.env.NEXT_PUBLIC_SERVER_URL! + "/account/login",
-				{
-					method: "POST",
-					mode: "cors",
-					credentials: "include",
-					headers: {
-						"Content-Type": "application/json",
-					},
-					body: JSON.stringify({
-						username: formik.values.username,
-						password: formik.values.password,
-					}),
-				}
-			);
-			if (response.status !== 200) {
-				const userData = await response.json();
-				setErrorMessage(userData.info);
-			} else {
-				Router.push("/home");
-			}
-		} catch (err) {
-			console.log(process.env.NEXT_PUBLIC_SERVER_URL!);
-			console.log(err);
-		}
-	};
+	// 	fetchUser();
+	// });
 
 	return (
 		<div className={styles.container}>
 			<Head>
-				<title>Login</title>
-				<meta name="login page" content="user log in" />
+				<title>Home</title>
+				<meta name="home page" content="home" />
 				<link rel="icon" href="/favicon.ico" />
 			</Head>
-
 			<main className={styles.main}>
-				<h1 className={styles.header}>Log In</h1>
-				<div className={styles.formContainer}>
-					<form className={styles.form} onSubmit={formik.handleSubmit}>
-						<label htmlFor="username">Username</label>
-						<input
-							type="text"
-							id="username"
-							name="username"
-							onChange={formik.handleChange}
-							onBlur={formik.handleBlur}
-							value={formik.values.username}
-						/>
-						{formik.touched.username && formik.errors.username ? (
-							<div className={styles.errorMessage}>
-								{formik.errors.username}
-							</div>
-						) : null}
-
-						<label htmlFor="password">Password</label>
-						<input
-							type="password"
-							id="password"
-							name="password"
-							onChange={formik.handleChange}
-							onBlur={formik.handleBlur}
-							value={formik.values.password}
-						/>
-						{formik.touched.password && formik.errors.password ? (
-							<div className={styles.errorMessage}>
-								{formik.errors.password}
-							</div>
-						) : null}
-
-						{errorMessage.length !== 0 && (
-							<div className={styles.errorMessage}>{errorMessage}</div>
-						)}
-
-						<button
-							type="submit"
-							disabled={
-								formik.errors.username !== undefined ||
-								formik.errors.password !== undefined ||
-								!formik.touched.username ||
-								!formik.touched.password
-							}
-						>
-							Log In
-						</button>
-					</form>
-				</div>
+				<h1>Welcome {}</h1>
 			</main>
 		</div>
 	);

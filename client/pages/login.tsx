@@ -63,7 +63,7 @@ const Login: NextPage = () => {
 				const userData = await response.json();
 				setErrorMessage(userData.info);
 			} else {
-				Router.push("/home");
+				Router.push("/");
 			}
 		} catch (err) {
 			console.log(process.env.NEXT_PUBLIC_SERVER_URL!);
@@ -120,10 +120,8 @@ const Login: NextPage = () => {
 						<button
 							type="submit"
 							disabled={
-								formik.errors.username !== undefined ||
-								formik.errors.password !== undefined ||
-								!formik.touched.username ||
-								!formik.touched.password
+								formik.values.username.length === 0 ||
+								formik.values.password.length === 0
 							}
 						>
 							Log In
