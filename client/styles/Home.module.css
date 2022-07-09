@@ -18,9 +18,13 @@
   min-height: 25rem;
   border-radius: var(--border-radius);
   padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .btnContainer {
+  width: 100%;
   display: flex;
   justify-content: flex-end;
 }
@@ -37,4 +41,8 @@
 .btn:hover {
   cursor: pointer;
   background-color: grey;
+}
+
+.hero {
+  border-radius: var(--border-radius);
 }

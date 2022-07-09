@@ -76,7 +76,13 @@ const Home: NextPage<Props> = (props: Props) => {
 						</button>
 					</div>
 					<h1>Welcome {props.fullName}!</h1>
-					<Image src="/dog.jpg" width={350} height={450} alt="party dog" />{" "}
+					<Image
+						className={styles.hero}
+						src="/dog.jpg"
+						width={300}
+						height={450}
+						alt="party dog"
+					/>
 				</div>
 			</main>
 		</div>
