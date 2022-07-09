@@ -14,7 +14,8 @@ const app: Application = express();
 //set port
 const port = process.env.PORT || process.env.PORT_DEV;
 
-// app.use(helmet());
+//middleware
+app.use(helmet());
 app.use(cookieParser());
 app.use(passport.initialize());
 app.use(

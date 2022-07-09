@@ -13,6 +13,7 @@ type Account = {
 	Name: string;
 };
 
+// local strategy
 passport.use(
 	new LocalStrategy(
 		{ usernameField: "username", passwordField: "password" },
@@ -45,6 +46,7 @@ passport.use(
 	)
 );
 
+// cookie extractor
 const cookieExtractor = (req: any) => {
 	let token = null;
 	if (req && req.cookies) {
@@ -53,6 +55,7 @@ const cookieExtractor = (req: any) => {
 	return token;
 };
 
+// jwt strategy
 passport.use(
 	new JWTStrategy(
 		{

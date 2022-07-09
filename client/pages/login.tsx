@@ -7,6 +7,7 @@ import Image from "next/image";
 import styles from "../styles/Login.module.css";
 import { useFormik } from "formik";
 
+// checks if user is already logged in
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
 	try {
 		await axios.get(process.env.NEXT_PUBLIC_SERVER_URL! + "/account/user", {
@@ -17,6 +18,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
 			},
 		});
 
+		// if user is logged in, redirect to home page
 		return {
 			redirect: {
 				permanent: false,
@@ -24,6 +26,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
 			},
 		};
 	} catch {
+		// if user is not logged in, continue loading log in page
 		return {
 			props: {},
 		};
@@ -40,6 +43,7 @@ type Errors = {
 	password?: string;
 };
 
+// formik validation
 const validate = (values: Values) => {
 	const errors: Errors = {};
 	if (!values.username) {
@@ -55,6 +59,7 @@ const validate = (values: Values) => {
 const Login: NextPage = () => {
 	const [errorMessage, setErrorMessage] = useState<string>("");
 
+	// formik set up
 	const formik = useFormik({
 		initialValues: {
 			username: "",
@@ -66,6 +71,7 @@ const Login: NextPage = () => {
 		},
 	});
 
+	// send api a post request to log in
 	const handleSubmit = async () => {
 		try {
 			const response = await fetch(
@@ -173,5 +179,3 @@ const Login: NextPage = () => {
 };
 
 export default Login;
-
-//https://www.xcentium.com/-/media/images/logo/xcentium-logo-dark.svg?h=111&iar=0&w=717&rev=c5fcdf17621c46499831bebd24654b21&hash=2986364333BC09037F34217B55C16539

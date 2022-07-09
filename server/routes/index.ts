@@ -8,7 +8,7 @@ const passport = require("../passport-config");
 router.get("/account/login", loginController.login_GET);
 router.post("/account/login", loginController.login_POST);
 
-//logout
+// logout
 router.get("/account/logout", (req: Request, res: Response) => {
 	res.clearCookie("jwt").end();
 });

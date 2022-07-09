@@ -5,6 +5,7 @@ import Head from "next/head";
 import Image from "next/image";
 import styles from "../styles/Home.module.css";
 
+// checks if user is logged in via jwt token in http only cookie
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
 	try {
 		const response = await axios.get(
@@ -18,12 +19,14 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
 			}
 		);
 
+		// return user's name if jwt auth is successful
 		return {
 			props: {
 				fullName: response.data.user,
 			},
 		};
 	} catch {
+		// redirect to log in page if jwt auth is unsuccessful
 		return {
 			redirect: {
 				permanent: false,
@@ -38,6 +41,7 @@ type Props = {
 };
 
 const Home: NextPage<Props> = (props: Props) => {
+	// handle log out and redirect
 	const handleLogout = async () => {
 		const response = await fetch(
 			process.env.NEXT_PUBLIC_SERVER_URL! + "/account/logout",
